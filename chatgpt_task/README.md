@@ -4,50 +4,33 @@
 
 1. Read `PROMPT.md`
 2. Answer the Design Questions (write your answers directly in `PROMPT.md`)
-3. Build the prototype:
-   - **Challenge Track:** Build from scratch using `PROMPT.md` as your spec
-   - **Guided Track:** Go to `scaffold/`, fill in the TODOs
+3. Build the prototype — either freestyle, or study/extend the reference implementation in `scaffold-node/`
 4. Verify with the MCP inspector tests at the bottom of `PROMPT.md`
 5. Bring your Design Questions answers to live session for discussion
 
-## Choose Your Track
+## Tracks
 
-**Challenge Track** — You decide the architecture, file structure, and implementation. Any language with an MCP SDK works (Python + the official `mcp` SDK recommended). Read `PROMPT.md` to get started.
+**Challenge Track** — You decide the architecture, file structure, and implementation. Any language with an MCP SDK works. Read `PROMPT.md` to get started.
 
-**Guided Track** — File structure and boilerplate are provided. Fill in the core logic marked with `TODO`. Go to `scaffold/` and follow the instructions below.
+**Reference Track** — `scaffold-node/` is a complete reference implementation in **Node.js + TypeScript + Zod + better-sqlite3**, using the official `@modelcontextprotocol/sdk`. Read its source to compare against your own design choices, or use it as the starting point for the Bonus Challenges.
 
-## Guided Track Setup
+## Reference Implementation Quickstart
 
-```bash
-cd scaffold
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-You also need **Node.js** for `npx` (used by the MCP inspector for verification).
-
-### Files to Fill In
-
-| File | TODO | Design Decision |
-|------|------|-----------------|
-| `app/scheduler.py` | `get_time_bucket()` + `find_due_jobs()` | Time bucket partitioning for efficient job scanning |
-| `app/mcp_server.py` | `TOOL_REGISTRY` + `route_tool_call()` | Registry pattern for MCP tool routing |
-
-### Run and Verify
-
-The prototype is a real MCP stdio server. Verify with the MCP inspector (no Claude needed):
+See `scaffold-node/README.md` for full setup, run, and verification details. TL;DR:
 
 ```bash
-npx @modelcontextprotocol/inspector python -m app.mcp_server
+cd scaffold-node
+pnpm install
+pnpm rebuild better-sqlite3 esbuild   # first time only — native binding build
+pnpm inspector                         # opens MCP inspector in your browser
 ```
 
-This opens a browser GUI — see `PROMPT.md` Verification section for the full test flow. Once the inspector tests pass, you can optionally connect to Claude Desktop / Claude Code (instructions also in `PROMPT.md`).
+Then walk through the GUI steps in `PROMPT.md` Verification section.
 
 ## Bonus Challenges
 
 - Connect a real LLM to parse natural language task descriptions before calling `task.create`
 - Add recurring job support (cron expressions)
-- Add job chaining (Job A completes -> triggers Job B)
+- Add job chaining (Job A completes → triggers Job B)
 - Add MCP `resources` support (e.g., expose job details as readable resources)
-- Add MCP `prompts` support (e.g., a `daily_review` prompt template)
+- Add MCP `prompts` support — `scaffold-node/` already ships a minimal `daily_review` prompt as a starting example
