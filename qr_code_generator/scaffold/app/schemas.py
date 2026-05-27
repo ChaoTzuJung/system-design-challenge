@@ -23,6 +23,8 @@ class QRInfoResponse(BaseModel):
     expires_at: datetime | None
     is_deleted: bool
 
+    model_config = {"from_attributes": True}
+
 
 class UpdateRequest(BaseModel):
     url: str | None = None
